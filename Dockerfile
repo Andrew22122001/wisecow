@@ -1,18 +1,21 @@
-RUN pip install --no-cache-dir -r requirements.txt
-# Use a lightweight Python base image
-FROM python:3.9-slim
+# Use a lightweight base image
+FROM debian:latest
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy application files into the container
+# Copy all application files into the container
 COPY . .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    cowsay \
+    fortune \
+    netcat-openbsd && \
+    apt-get clean
 
-# Expose the port used by the application
-EXPOSE 5000
+# Make the script executable
+RUN chmod +x wisecow.sh
 
-# Command to run the application
-CMD ["python", "app.py"]
+# Set the script to run on container start
+CMD ["bash", "wisecow.sh"]
