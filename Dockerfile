@@ -1,3 +1,4 @@
+RUN pip install --no-cache-dir -r requirements.txt
 # Use a lightweight Python base image
 FROM python:3.9-slim
 
