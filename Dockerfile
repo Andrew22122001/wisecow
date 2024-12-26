@@ -1,25 +1,22 @@
-# Use a lightweight base image
 FROM ubuntu:20.04
 
-# Install required packages
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
     apt-get install -y \
-    fortune \
-    cowsay && \
-    rm -rf /var/lib/apt/lists/*
+    fortune-mod \
+    cowsay \
+    netcat \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables
 ENV PATH="/usr/games:${PATH}"
 
-# Create app directory
 WORKDIR /app
 
-# Copy the application files
-COPY wisecow.sh /app/
-COPY quotes.txt /app/
+COPY . /app/
 
-# Make the script executable
 RUN chmod +x /app/wisecow.sh
 
-# Set the entrypoint
-ENTRYPOINT ["/app/wisecow.sh"]
+EXPOSE 4499
+
+ENTRYPOINT ["/bin/bash", "/app/wisecow.sh"]
